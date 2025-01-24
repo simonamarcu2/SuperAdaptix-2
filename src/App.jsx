@@ -7,7 +7,7 @@ class App extends Component {
     render() {
         return (
             <div>
-              <h1>Super Adaptix</h1>
+              <h1>SuperAdaptix: Innovate Your Workflow</h1>
                 <div className="gantt-container">
                     <Gantt tasks={testData}/>
                 </div>

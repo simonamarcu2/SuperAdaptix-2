@@ -1,0 +1,49 @@
+body {
+  background: conic-gradient(from 270deg, #1a2a6c, #b21f1f, #fdbb2d, #1a2a6c);
+  background-size: 200% 200%; /* To create a zoomed effect */
+  animation: cosmicEnergyMove 8s infinite alternate; /* Subtle animation */
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Arial', sans-serif;
+  color: #ffffff;
+}
+
+@keyframes cosmicEnergyMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+#root {
+  text-align: center;
+}
+
+
+button {
+  background-color: #00ffcc;
+  border: none;
+  color: #0d0d0d;
+  padding: 1em 2em;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #00bfa5;
+}
+h1 {
+  font-size: 50px;
+  font-weight: 400;
+  background-image: conic-gradient(from 270deg, #2d84a1, #b21f1f, #eeb335, #1a6c52);
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
