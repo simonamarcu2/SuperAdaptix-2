@@ -4,7 +4,6 @@
   "version": "0.0.0",
   "type": "module",
   "license": "MIT",
-  
   "scripts": {
     "dev": "vite --host ",
     "build": "vite build",
@@ -12,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@bitnoi.se/react-scheduler": "^0.3.1",
     "dhtmlx-gantt": "^9.0.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
