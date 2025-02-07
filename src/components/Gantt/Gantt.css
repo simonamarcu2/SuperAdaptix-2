@@ -1,3 +1,33 @@
 html, body, #root,#root div:only-child, .gantt-container {
   height: 100%;
 }
+.gantt_row.odd.gantt_row_task [data-column-name="instructor_name"],
+.gantt_row.gantt_row_task [data-column-name="instructor_name"]{
+  text-align: left;
+}
+
+.gantt_row.odd.gantt_row_task,
+.gantt_task_row.odd {
+  background-color: #DAFFED;
+}
+
+/* .gantt_tree_content {
+  text-align: center;
+} */
+.gantt-chart {
+  display: flex;
+  flex-direction: column;
+}
+
+.gantt-task {
+  margin: 5px;
+  padding: 10px;
+  border-radius: 4px;
+  color: rgb(3, 2, 2);
+  text-align: center;
+}
+
+
+.gantt_grid_data {
+  width: 350px;
+}
