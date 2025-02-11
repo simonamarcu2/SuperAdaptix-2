@@ -1,38 +1,21 @@
-// import { Component } from 'react';
-// import PropTypes from 'prop-types';
-// import './Toolbar.css';
+import PropTypes from 'prop-types';
 
-// export default class Toolbar extends Component {
-//     handleZoomChange = (e) => {
-//         if (this.props.onZoomChange) {
-//             this.props.onZoomChange(e.target.value);
-//         }
-        
-//         Toolbar.propTypes = {
-//             onZoomChange: PropTypes.func,
-//             zoom: PropTypes.string.isRequired
-//         };
-//         }
-    
-//     render() {
-//         const zoomRadios = ['Hours', 'Days', 'Months'].map((value) => {
-//             const isActive = this.props.zoom === value;
-//             return (
-//                 <label key={ value } className={ `radio-label ${isActive ? 'radio-label-active': ''}` }>
-//                     <input type='radio'
-//                         checked={ isActive }
-//                         onChange={ this.handleZoomChange }
-//                         value={ value }/>
-//                     { value }
-//                 </label>
-//             );
-//         });
-
-//         return (
-//             <div className="tool-bar">
-//                 <b>Zooming: </b>
-//                     { zoomRadios }
-//             </div>
-//         );
-//     }
-// }
+export default function Toolbar({ timeFormatState, onTimeFormatStateChange }) {
+  Toolbar.propTypes = {
+    timeFormatState: PropTypes.bool.isRequired,
+    onTimeFormatStateChange: PropTypes.func.isRequired,
+  };
+	return (
+		<div className="time-format-section">
+			<label className="time-format-chkbx">
+				Time format:
+				<input
+					type="checkbox"
+					checked={timeFormatState}
+					onChange={(e) => onTimeFormatStateChange(e.target.checked)}
+				/>
+				<div className="chkbx-text"></div>
+			</label>
+    </div>
+  );
+}

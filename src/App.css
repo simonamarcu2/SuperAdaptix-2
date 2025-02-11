@@ -33,9 +33,11 @@ h2 {
   color: black;
   background-color: #87f2eb;
 }
+
 .gantt_link_control.task_left.task_start_date{
   display: none;
 }
+
 .gantt_link_control.task_right.task_end_date{
   display: none;
 }

@@ -1,19 +1,24 @@
-html, body, #root,#root div:only-child, .gantt-container {
+html,
+body,
+#root,
+#root div:only-child,
+.gantt-container {
   height: 100%;
 }
-.gantt_row.odd.gantt_row_task [data-column-name="instructor_name"],
+/* .gantt_row.odd.gantt_row_task [data-column-name="instructor_name"],
 .gantt_row.gantt_row_task [data-column-name="instructor_name"]{
   text-align: left;
-}
+} */
 
 .gantt_row.odd.gantt_row_task,
 .gantt_task_row.odd {
-  background-color: #DAFFED;
+  background-color: #daffed;
 }
 
-/* .gantt_tree_content {
+.gantt_tree_content {
   text-align: center;
-} */
+}
+
 .gantt-chart {
   display: flex;
   flex-direction: column;
@@ -27,7 +32,40 @@ html, body, #root,#root div:only-child, .gantt-container {
   text-align: center;
 }
 
+.gantt_task_conflict {
+  background-color: #ffcccc !important;
+  border: 1px solid #ff0000 !important;
+}
 
 .gantt_grid_data {
   width: 350px;
+}
+/* .gantt_grid_head_cell.gantt_grid_head_start_date.gantt_last_cell,
+.gantt_cell.gantt_last_cell {
+  display: none;
+} */
+.gantt_task_content {
+  color: black;
+}
+
+.gantt-chart button {
+  width: 260px;
+  margin: 5px;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.gantt-chart input[type="file"] {
+
+  margin: 5px;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #277ff2;
+  color: white;
+  border: none;
+  cursor: pointer;
 }

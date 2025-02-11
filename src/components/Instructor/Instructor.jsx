@@ -1,7 +1,5 @@
-import PropTypes from 'prop-types';
+import testData from '../../data/testData.jsx';
 import "./Instructor.css";
-import testData from '../../data/testData';
-
 
 // Predefined pastel colors
 const pastelColors = [
