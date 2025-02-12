@@ -5,10 +5,6 @@ body,
 .gantt-container {
   height: 100%;
 }
-/* .gantt_row.odd.gantt_row_task [data-column-name="instructor_name"],
-.gantt_row.gantt_row_task [data-column-name="instructor_name"]{
-  text-align: left;
-} */
 
 .gantt_row.odd.gantt_row_task,
 .gantt_task_row.odd {
@@ -37,35 +33,63 @@ body,
   border: 1px solid #ff0000 !important;
 }
 
-.gantt_grid_data {
-  width: 350px;
+.gantt_grid {
+  width: 400px;
 }
-/* .gantt_grid_head_cell.gantt_grid_head_start_date.gantt_last_cell,
-.gantt_cell.gantt_last_cell {
-  display: none;
-} */
+
 .gantt_task_content {
   color: black;
 }
 
-.gantt-chart button {
-  width: 260px;
-  margin: 5px;
-  padding: 10px;
-  border-radius: 4px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  cursor: pointer;
+
+.gantt_control {
+  display: inline-flex;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border-radius: 8px;
 }
 
-.gantt-chart input[type="file"] {
-
-  margin: 5px;
-  padding: 10px;
-  border-radius: 4px;
-  background-color: #277ff2;
-  color: white;
+button, input [type="file"] {
+  padding: 0.5rem 1rem;
   border: none;
+  border-radius: 6px;
+  font-size: 1rem;
   cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  color: #2d6a4f; 
+
+}
+
+button {
+  width: 70px;
+  height: 40px;
+  margin-right: 8px;
+  background-color: #d3f9d8;
+  color: #2d6a4f; 
+}
+
+.pastel-blue { background-color: #d0ebff; color: #1c3d5a; }
+.pastel-green { background-color: #d3f9d8; color: #2d6a4f; }
+.pastel-yellow { background-color: #fff3bf; color: #6f4f00; }
+.FontAwesomeIcon { background-color: #ffe3e3; color: #862e2e; }
+
+button:hover {
+  opacity: 0.85;
+}
+
+.gantt_marker{
+  background-color: rgba(255, 0, 0, 0.8);
+}
+
+.gantt_task_line, .gantt_task_link{
+  transition: opacity 200ms;
+}
+.overlay_visible .gantt_task_line,
+.overlay_visible .gantt_task_link{
+  opacity: 0.6;
+}
+
+.gantt_marker.today{
+  background: #ffb121;
 }

@@ -41,7 +41,7 @@ const App = () => {
 
   return (
     <div>
-      <h2>SuperAdaptix</h2>
+      <h1>SuperAdaptix</h1>
       <div className="gantt-container">
         <Gantt
           tasks={tasks}

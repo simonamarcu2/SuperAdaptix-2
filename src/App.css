@@ -25,13 +25,11 @@ body {
   }
 }
 
-h2 {
+h1 {
   position: relative;
   margin: auto;
-  border: 2px solid #222;
   padding: 5px 11px 3px 11px;
   color: black;
-  background-color: #87f2eb;
 }
 
 .gantt_link_control.task_left.task_start_date{

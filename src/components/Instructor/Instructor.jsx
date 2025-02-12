@@ -30,6 +30,6 @@ function assignInstructorColors(data) {
 }
 
 // Assign colors to instructors
-const instructorColors = assignInstructorColors(testData.data);
+const Instructor = assignInstructorColors(testData.data);
 
-export default instructorColors ;
+export default Instructor ;
