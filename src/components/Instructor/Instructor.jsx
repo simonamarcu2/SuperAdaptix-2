@@ -1,7 +1,7 @@
-import testData from '../../data/testData.jsx';
+import React from "react";
+import PropTypes from "prop-types";
 import "./Instructor.css";
 
-// Predefined pastel colors
 const pastelColors = [
   'pastel-color-1', 'pastel-color-2', 'pastel-color-3', 'pastel-color-4', 'pastel-color-5',
   'pastel-color-6', 'pastel-color-7', 'pastel-color-8', 'pastel-color-9', 'pastel-color-10',
@@ -15,21 +15,26 @@ const pastelColors = [
   'pastel-color-46', 'pastel-color-47', 'pastel-color-48', 'pastel-color-49', 'pastel-color-50'
 ];
 
-// Function to assign colors to instructors
-function assignInstructorColors(data) {
-  const instructorColors = {};
-  let colorIndex = 0;
-  data.forEach(item => {
-    if (!instructorColors[item.instructor_name]) {
-      instructorColors[item.instructor_name] = pastelColors[colorIndex % pastelColors.length];
-      colorIndex++;
-    }
-  });
+const instructorColors = {};
 
-  return instructorColors;
+function getInstructorColor(instructor) {
+  if (!instructorColors[instructor]) {
+    instructorColors[instructor] = pastelColors[Object.keys(instructorColors).length % pastelColors.length];
+  }
+  return instructorColors[instructor];
 }
 
-// Assign colors to instructors
-const Instructor = assignInstructorColors(testData.data);
+const Instructor = ({ name }) => {
+  const color = getInstructorColor(name) || 'default-color';
+  return (
+    <div className={`instructor ${color}`}>
+      <span>{name}</span>
+    </div>
+  );
+};
 
-export default Instructor ;
+Instructor.propTypes = {
+  name: PropTypes.string.isRequired,
+};
+
+export default Instructor;

@@ -8,7 +8,8 @@ body,
 
 .gantt_row.odd.gantt_row_task,
 .gantt_task_row.odd {
-  background-color: #daffed;
+  box-shadow: inset 0 5px 5px #fff;
+  background-image: linear-gradient(to bottom, #e4f0ffa5, #dfedffb2, #d5e8ff91);
 }
 
 .gantt_tree_content {
@@ -24,10 +25,13 @@ body,
   margin: 5px;
   padding: 10px;
   border-radius: 4px;
-  color: rgb(3, 2, 2);
+  color: rgb(0, 0, 0);
   text-align: center;
 }
-
+.gantt_task_line {
+  border-radius: 10px;
+  color: black;
+}
 .gantt_task_conflict {
   background-color: #ffcccc !important;
   border: 1px solid #ff0000 !important;
@@ -41,87 +45,59 @@ body,
   color: black;
 }
 
-
 .gantt_control {
   display: inline-flex;
   gap: 1rem;
   padding: 1rem;
-  background-color: #f5f5f5;
   border-radius: 8px;
 }
 
-button, input [type="file"] {
+button {
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 6px;
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
-  color: #2d6a4f; 
   width: 110px;
   height: 40px;
   margin-right: 8px;
-  background-color: #d3f9d8;
-  color: #2d6a4f; 
+  box-shadow: inset 0 1px 1px #fff;
+  background-image: linear-gradient(to bottom, #e4f0ff, #dfedff, #d5e8ff);
+  color: #000000;
 }
 
-.pastel-blue { background-color: #d0ebff; color: #1c3d5a; }
-.pastel-green { background-color: #d3f9d8; color: #2d6a4f; }
-.pastel-yellow { background-color: #fff3bf; color: #6f4f00; }
-.FontAwesomeIcon { background-color: #ffe3e3; color: #862e2e; }
+.import-csv {
+  box-shadow: inset 0 1px 1px #fff;
+  background-image: linear-gradient(to bottom, #e4f0ff, #dfedff, #d5e8ff);
+  color: #000000;
+  padding: 10px;
+  border-radius: 6px;
+  width: 172px;
+  cursor: pointer;
+}
+
+.icon {
+  background-color: #ffe3e3;
+  color: #862e2e;
+}
 
 button:hover {
   opacity: 0.85;
 }
 
 .gantt_grid_scale .gantt_grid_head_cell,
-		.gantt_task .gantt_task_scale .gantt_scale_cell {
-			font-weight: bold;
-			font-size: 14px;
-			color: rgba(0, 0, 0, 0.7);
-		}
+.gantt_task .gantt_task_scale .gantt_scale_cell {
+  font-weight: bold;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.7);
+}
 
-		.resource_marker {
-			text-align: center;
-		}
-
-		.resource_marker div{
-			width: 28px;
-			height: 28px;
-			border-radius: 15px;
-			color: #FFF;
-			margin: 3px;
-			display: inline-flex;
-			justify-content: center;
-			align-items: center;
-		}
-		.resource_marker.workday_ok div {
-			background: var(--dhx-gantt-base-colors-success);
-		}
-
-		.resource_marker.workday_over div{
-			background: var(--dhx-gantt-base-colors-error);
-		}
-
-
-
-		.owner-label {
-			width: 20px;
-			height: 20px;
-			
-			font-size: 12px;
-			display: inline-flex;
-			justify-content: center;
-			align-items: center;
-			border: 1px solid #cccccc;
-			border-radius: 25px;
-			background: #e6e6e6;
-			color: #6f6f6f;
-			margin: 0 3px;
-			font-weight: bold;
-		}
-
-		.gantt_tooltip {
-			font-size: 13px;
-			line-height: 16px;
-		}
+.gantt_tooltip {
+  font-size: 13px;
+  line-height: 16px;
+  box-shadow: inset 0 1px 1px #fff;
+  /* background-image: linear-gradient(to bottom, #e4f0ff, #dfedff, #d5e8ff);
+      border: 1px solid #a5b9d1;
+      color: black; */
+}

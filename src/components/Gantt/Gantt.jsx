@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import { saveAs } from "file-saver";
 import Papa from "papaparse";
 import testData from "../../data/testData.jsx";
+import Instructor from "../Instructor/Instructor.jsx";
 
 export default class Gantt extends Component {
   static propTypes = {
@@ -30,9 +31,18 @@ export default class Gantt extends Component {
     gantt.config.date_format = "%Y-%m-%d";
     gantt.config.autofit = true;
     gantt.config.grid_width = 500;
-
+    gantt.setSkin("skyblue");
     gantt.templates.tooltip_text = function (start, end, task) {
-      return "<b>Task:</b> " + task.text + "<br/><b>Owner:</b> " + task.owner;
+      return (
+        "<b>Task:</b> " +
+        task.text +
+        "<br/><b>Instructor:</b> " +
+        task.owner
+      );
+    };
+
+    gantt.templates.task_class = function (start, end, task) {
+      return task.color;
     };
 
     gantt.config.lightbox.sections = [
@@ -51,9 +61,8 @@ export default class Gantt extends Component {
       },
       { name: "time", type: "duration", map_to: "auto", autofix_end: "true" },
     ];
-    gantt.locale.labels.section_template = "Owner";
+    gantt.locale.labels.section_template = "Instructor";
     gantt.attachEvent("onBeforeLightbox", function (id) {
-      // let task = gantt.getTask(id);
       return true;
     });
 
@@ -66,7 +75,7 @@ export default class Gantt extends Component {
         label: "Start",
         width: 30,
         template: function (task) {
-          return gantt.date.date_to_str("%d.%m")(task.start_date);
+          return gantt.date.date_to_str("%d-%m")(task.start_date);
         },
       },
       { name: "duration", label: "Days", width: 30, align: "center" },
@@ -267,19 +276,21 @@ export default class Gantt extends Component {
       <div className="gantt-chart">
         <div className="gantt_control">
           <button onClick={this.exportToCSV}>Export</button>
-          <input type="file" accept=".csv" onChange={this.importFromCSV} />
+          <input className="import-csv" type="file" accept=".csv" onChange={this.importFromCSV} />
           <button
             className="gantt-undo"
             value="Undo"
             type="button"
-            onClick={() => gantt.undo()}>
+            onClick={() => gantt.undo()}
+          >
             Undo
           </button>
           <button
             className="gantt-redo"
             value="Redo"
             type="button"
-            onClick={() => gantt.redo()}>
+            onClick={() => gantt.redo()}
+          >
             Redo
           </button>
           <button onClick={this.zoomIn}>Zoom In</button>
