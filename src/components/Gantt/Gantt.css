@@ -73,3 +73,55 @@ button, input [type="file"] {
 button:hover {
   opacity: 0.85;
 }
+
+.gantt_grid_scale .gantt_grid_head_cell,
+		.gantt_task .gantt_task_scale .gantt_scale_cell {
+			font-weight: bold;
+			font-size: 14px;
+			color: rgba(0, 0, 0, 0.7);
+		}
+
+		.resource_marker {
+			text-align: center;
+		}
+
+		.resource_marker div{
+			width: 28px;
+			height: 28px;
+			border-radius: 15px;
+			color: #FFF;
+			margin: 3px;
+			display: inline-flex;
+			justify-content: center;
+			align-items: center;
+		}
+		.resource_marker.workday_ok div {
+			background: var(--dhx-gantt-base-colors-success);
+		}
+
+		.resource_marker.workday_over div{
+			background: var(--dhx-gantt-base-colors-error);
+		}
+
+
+
+		.owner-label {
+			width: 20px;
+			height: 20px;
+			
+			font-size: 12px;
+			display: inline-flex;
+			justify-content: center;
+			align-items: center;
+			border: 1px solid #cccccc;
+			border-radius: 25px;
+			background: #e6e6e6;
+			color: #6f6f6f;
+			margin: 0 3px;
+			font-weight: bold;
+		}
+
+		.gantt_tooltip {
+			font-size: 13px;
+			line-height: 16px;
+		}

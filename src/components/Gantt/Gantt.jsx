@@ -3,11 +3,9 @@ import { gantt } from "dhtmlx-gantt";
 import "dhtmlx-gantt/codebase/dhtmlxgantt.css";
 import "./Gantt.css";
 import PropTypes from "prop-types";
-import testData from "../../data/testData.jsx";
-import Instructor from "../Instructor/Instructor.jsx";
 import { saveAs } from "file-saver";
 import Papa from "papaparse";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import testData from "../../data/testData.jsx";
 
 export default class Gantt extends Component {
   static propTypes = {
@@ -15,8 +13,8 @@ export default class Gantt extends Component {
   };
 
   state = {
-    exportFields: ["id", "text", "start_date", "duration", "instructor_name"],
-    importFields: ["id", "text", "start_date", "duration", "instructor_name"],
+    exportFields: ["id", "text", "start_date", "duration", "owner"],
+    importFields: ["id", "text", "start_date", "duration", "owner"],
   };
 
   handleExportFieldsChange = (event) => {
@@ -26,6 +24,7 @@ export default class Gantt extends Component {
   handleImportFieldsChange = (event) => {
     this.setState({ importFields: event.target.value.split(",") });
   };
+
   componentDidMount() {
     const { tasks } = this.props;
     gantt.config.date_format = "%Y-%m-%d";
@@ -33,14 +32,7 @@ export default class Gantt extends Component {
     gantt.config.grid_width = 500;
 
     gantt.templates.tooltip_text = function (start, end, task) {
-      return (
-        "<b>Task:" +
-        task.text +
-        "<br/><b>Instructor:" +
-        task.instructor_name +
-        "<br/><b>Duration:" +
-        task.duration
-      );
+      return "<b>Task:</b> " + task.text + "<br/><b>Owner:</b> " + task.owner;
     };
 
     gantt.config.lightbox.sections = [
@@ -52,35 +44,29 @@ export default class Gantt extends Component {
         focus: true,
       },
       {
-        name: "instructor",
+        name: "template",
         height: 30,
-        map_to: "instructor_name",
         type: "textarea",
+        map_to: "owner",
       },
       { name: "time", type: "duration", map_to: "auto", autofix_end: "true" },
     ];
-
-    gantt.attachEvent("onLightbox", function (task_id) {
-      const task = gantt.getTask(task_id);
-      const instructor = task.instructor_name;
-      const instructorElement = document.querySelector(
-        ".gantt_task_instructor"
-      );
-      if (instructorElement) {
-        instructorElement.innerHTML = instructor;
-      }
+    gantt.locale.labels.section_template = "Owner";
+    gantt.attachEvent("onBeforeLightbox", function (id) {
+      // let task = gantt.getTask(id);
+      return true;
     });
 
     gantt.config.columns = [
       { name: "count", label: "Count", width: 30, template: gantt.getWBSCode },
       { name: "text", label: "Course Name", width: "*" },
-      { name: "instructor_name", label: "Name", width: "*" },
+      { name: "owner", label: "Instructor", width: "*" },
       {
         name: "start_date",
         label: "Start",
         width: 30,
         template: function (task) {
-          return gantt.templates.date_grid(task.start_date);
+          return gantt.date.date_to_str("%d.%m")(task.start_date);
         },
       },
       { name: "duration", label: "Days", width: 30, align: "center" },
@@ -97,100 +83,115 @@ export default class Gantt extends Component {
       if (!gantt.isWorkTime(date)) return "weekend";
     };
 
-      const zoomConfig = {
-        levels: [
+    const zoomConfig = {
+      levels: [
+        {
+          name: "hour",
+          scale_height: 27,
+          min_column_width: 15,
+          scales: [
+            { unit: "day", format: "%d" },
+            { unit: "hour", format: "%H" },
+          ],
+        },
+        {
+          name: "day",
+          scale_height: 27,
+          min_column_width: 80,
+          scales: [{ unit: "day", step: 1, format: "%d %M" }],
+        },
+        {
+          name: "week",
+          scale_height: 50,
+          min_column_width: 50,
+          scales: [
             {
-                name: "hour",
-                scale_height: 27,
-                min_column_width: 15,
-                scales: [
-                    { unit: "day", format: "%d" },
-                    { unit: "hour", format: "%H" },
-                ]
+              unit: "week",
+              step: 1,
+              format: function (date) {
+                var dateToStr = gantt.date.date_to_str("%d %M");
+                var endDate = gantt.date.add(date, 7 - date.getDay(), "day");
+                var weekNum = gantt.date.date_to_str("%W")(date);
+                return (
+                  "#" +
+                  weekNum +
+                  ", " +
+                  dateToStr(date) +
+                  " - " +
+                  dateToStr(endDate)
+                );
+              },
             },
+            { unit: "day", step: 1, format: "%j %D" },
+          ],
+        },
+        {
+          name: "month",
+          scale_height: 50,
+          min_column_width: 120,
+          scales: [
+            { unit: "month", format: "%F, %Y" },
+            { unit: "week", format: "Week #%W" },
+          ],
+        },
+        {
+          name: "quarter",
+          height: 50,
+          min_column_width: 90,
+          scales: [
             {
-                name: "day",
-                scale_height: 27,
-                min_column_width: 80,
-                scales: [
-                    { unit: "day", step: 1, format: "%d %M" }
-                ]
+              unit: "quarter",
+              step: 1,
+              format: function (date) {
+                var dateToStr = gantt.date.date_to_str("%M");
+                var endDate = gantt.date.add(
+                  date,
+                  2 - (date.getMonth() % 3),
+                  "month"
+                );
+                return dateToStr(date) + " - " + dateToStr(endDate);
+              },
             },
-            {
-                name: "week",
-                scale_height: 50,
-                min_column_width: 50,
-                scales: [
-                    {
-                        unit: "week", step: 1, format: function (date) {
-                            var dateToStr = gantt.date.date_to_str("%d %M");
-                            var endDate = gantt.date.add(date, 7 - date.getDay(), "day");
-                            var weekNum = gantt.date.date_to_str("%W")(date);
-                            return "#" + weekNum + ", " + dateToStr(date) + " - " + dateToStr(endDate);
-                        }
-                    },
-                    { unit: "day", step: 1, format: "%j %D" }
-                ]
-            },
-            {
-                name: "month",
-                scale_height: 50,
-                min_column_width: 120,
-                scales: [
-                    { unit: "month", format: "%F, %Y" },
-                    { unit: "week", format: "Week #%W" }
-                ]
-            },
-            {
-                name: "quarter",
-                height: 50,
-                min_column_width: 90,
-                scales: [
-                    {
-                        unit: "quarter", step: 1, format: function (date) {
-                            var dateToStr = gantt.date.date_to_str("%M");
-                            var endDate = gantt.date.add(date, 2 - date.getMonth() % 3, "month");
-                            return dateToStr(date) + " - " + dateToStr(endDate);
-                        }
-                    },
-                    { unit: "month", step: 1, format: "%M" },
-                ]
-            },
-            {
-                name: "year",
-                scale_height: 50,
-                min_column_width: 30,
-                scales: [
-                    { unit: "year", step: 1, format: "%Y" }
-                ]
-            }
-        ],
-        useKey: "ctrlKey",
-        trigger: "wheel",
-        element: function () {
-            return gantt.$root.querySelector(".gantt_task");
-        }
+            { unit: "month", step: 1, format: "%M" },
+          ],
+        },
+        {
+          name: "year",
+          scale_height: 50,
+          min_column_width: 30,
+          scales: [{ unit: "year", step: 1, format: "%Y" }],
+        },
+      ],
+      useKey: "ctrlKey",
+      trigger: "wheel",
+      element: function () {
+        return gantt.$root.querySelector(".gantt_task");
+      },
     };
-    
-      gantt.ext.zoom.init(zoomConfig);
-      gantt.config.date_format = "%Y-%m-%d";
+
+    gantt.ext.zoom.init(zoomConfig);
+    gantt.config.date_format = "%Y-%m-%d";
     gantt.config.correct_work_time = true;
     gantt.config.auto_scheduling = true;
     gantt.config.auto_scheduling_strict = true;
     gantt.config.auto_scheduling_compatibility = true;
     gantt.ext.zoom.init(zoomConfig);
-			gantt.ext.zoom.setLevel("week");
+    gantt.ext.zoom.setLevel("week");
 
-      gantt.plugins({
-        multiselect: true,
-        tooltip: true,
-        auto_scheduling: true,
-        undo: true,
-        marker: true,
-        overlay: true,
-      });
-  
+    gantt.plugins({
+      auto_scheduling: true,
+      click_drag: true,
+      marker: true,
+      multiselect: true,
+      overlay: true,
+      quick_info: true,
+      tooltip: true,
+      undo: true,
+    });
 
+    gantt.templates.quick_info_content = function(start, end, task){ 
+      return task.owner || task.text;
+    };
     gantt.attachEvent("onBeforeAutoSchedule", function () {
       gantt.message("Recalculating project schedule...");
       return true;
@@ -265,42 +266,31 @@ export default class Gantt extends Component {
     return (
       <div className="gantt-chart">
         <div className="gantt_control">
-          <button onClick={this.exportToCSV}>Export
-            {/* <FontAwesomeIcon className="icon" icon="fa-solid fa-file-export" /> */}
-          </button>
+          <button onClick={this.exportToCSV}>Export</button>
           <input type="file" accept=".csv" onChange={this.importFromCSV} />
-          {/* <FontAwesomeIcon className="icon" icon="fa-solid fa-file-import" /> */}
           <button
             className="gantt-undo"
             value="Undo"
             type="button"
-            onClick={() => gantt.undo()}
-          >
+            onClick={() => gantt.undo()}>
             Undo
           </button>
           <button
             className="gantt-redo"
             value="Redo"
             type="button"
-            onClick={() => gantt.redo()}
-          >
+            onClick={() => gantt.redo()}>
             Redo
           </button>
           <button onClick={this.zoomIn}>Zoom In</button>
           <button onClick={this.zoomOut}>Zoom Out</button>
         </div>
-        {testData.data.map((task) => (
-          <div
-            ref={(input) => {
-              this.ganttContainer = input;
-            }}
-            key={task.id}
-            style={{ width: "100%", height: `calc(100vh - 52px)` }}
-            className={`gantt-task ${Instructor[task.instructor_name]}`}
-          >
-            {task.text}
-          </div>
-        ))}
+        <div
+          ref={(input) => {
+            this.ganttContainer = input;
+          }}
+          style={{ width: "100%", height: `calc(100vh - 52px)` }}
+        />
       </div>
     );
   }
