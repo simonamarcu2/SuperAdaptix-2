@@ -66,7 +66,9 @@ export default class Gantt extends Component {
       const instructorElement = document.querySelector(
         ".gantt_task_instructor"
       );
-      instructorElement.innerHTML = instructor;
+      if (instructorElement) {
+        instructorElement.innerHTML = instructor;
+      }
     });
 
     gantt.config.columns = [

@@ -58,11 +58,7 @@ button, input [type="file"] {
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
   color: #2d6a4f; 
-
-}
-
-button {
-  width: 70px;
+  width: 110px;
   height: 40px;
   margin-right: 8px;
   background-color: #d3f9d8;
@@ -76,20 +72,4 @@ button {
 
 button:hover {
   opacity: 0.85;
-}
-
-.gantt_marker{
-  background-color: rgba(255, 0, 0, 0.8);
-}
-
-.gantt_task_line, .gantt_task_link{
-  transition: opacity 200ms;
-}
-.overlay_visible .gantt_task_line,
-.overlay_visible .gantt_task_link{
-  opacity: 0.6;
-}
-
-.gantt_marker.today{
-  background: #ffb121;
 }
