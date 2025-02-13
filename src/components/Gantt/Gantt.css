@@ -5,6 +5,9 @@ body,
 .gantt-container {
   height: 100%;
 }
+.gantt_task_scale{
+  background-image: linear-gradient(to bottom, #00479d, #113059, #0670f1);
+}
 
 .gantt_row.odd.gantt_row_task,
 .gantt_task_row.odd {
