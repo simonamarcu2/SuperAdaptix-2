@@ -5,8 +5,6 @@ import "./Gantt.css";
 import PropTypes from "prop-types";
 import { saveAs } from "file-saver";
 import Papa from "papaparse";
-import testData from "../../data/testData.jsx";
-import Instructor from "../Instructor/Instructor.jsx";
 
 export default class Gantt extends Component {
   static propTypes = {
@@ -14,8 +12,8 @@ export default class Gantt extends Component {
   };
 
   state = {
-    exportFields: ["id", "text", "start_date", "duration", "owner"],
-    importFields: ["id", "text", "start_date", "duration", "owner"],
+    exportFields: ["id", "text", "start_date", "duration", "instructor"],
+    importFields: ["id", "text", "start_date", "duration", "instructor"],
   };
 
   handleExportFieldsChange = (event) => {
@@ -28,19 +26,22 @@ export default class Gantt extends Component {
 
   componentDidMount() {
     const { tasks } = this.props;
-    gantt.config.date_format = "%Y-%m-%d";
+
     gantt.config.autofit = true;
     gantt.config.grid_width = 500;
-    gantt.setSkin("skyblue");
+
+    gantt.setSkin("meadow");
+    
     gantt.templates.tooltip_text = function (start, end, task) {
       return (
         "<b>Task:</b> " +
         task.text +
         "<br/><b>Instructor:</b> " +
-        task.owner
+        task.instructor
       );
     };
-
+    
+//color assignments for instructors
     gantt.templates.task_class = function (start, end, task) {
       return task.color;
     };
@@ -57,7 +58,7 @@ export default class Gantt extends Component {
         name: "template",
         height: 30,
         type: "textarea",
-        map_to: "owner",
+        map_to: "instructor",
       },
       { name: "time", type: "duration", map_to: "auto", autofix_end: "true" },
     ];
@@ -66,10 +67,21 @@ export default class Gantt extends Component {
       return true;
     });
 
+    gantt.attachEvent("onLightboxSave", function(id, item){
+      if(!item.text){
+          gantt.message({type:"error", text:"Enter a description!"});
+          return false;
+      }
+      if(!item.user){
+          gantt.message({type:"error", text:"Choose a worker for this task!"});
+          return false;
+      }
+          return true;
+  });
+
     gantt.config.columns = [
-      { name: "count", label: "Count", width: 30, template: gantt.getWBSCode },
       { name: "text", label: "Course Name", width: "*" },
-      { name: "owner", label: "Instructor", width: "*" },
+      { name: "instructor", label: "Instructor", width: "*" },
       {
         name: "start_date",
         label: "Start",
@@ -91,7 +103,8 @@ export default class Gantt extends Component {
     gantt.templates.timeline_cell_class = function (item, date) {
       if (!gantt.isWorkTime(date)) return "weekend";
     };
-
+    gantt.config.min_column_width = 50;
+    gantt.config.scale_height = 90;
     const zoomConfig = {
       levels: [
         {
@@ -178,7 +191,6 @@ export default class Gantt extends Component {
       },
     };
 
-    gantt.ext.zoom.init(zoomConfig);
     gantt.config.date_format = "%Y-%m-%d";
     gantt.config.correct_work_time = true;
     gantt.config.auto_scheduling = true;
@@ -193,14 +205,10 @@ export default class Gantt extends Component {
       marker: true,
       multiselect: true,
       overlay: true,
-      quick_info: true,
       tooltip: true,
       undo: true,
     });
 
-    gantt.templates.quick_info_content = function(start, end, task){ 
-      return task.owner || task.text;
-    };
     gantt.attachEvent("onBeforeAutoSchedule", function () {
       gantt.message("Recalculating project schedule...");
       return true;
