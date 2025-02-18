@@ -1,33 +1,17 @@
-import PropTypes from "prop-types";
-import { useMemo } from "react";
 import "./Instructor.css";
-import testData from "../../data/testData.jsx";
+import gantt from "dhtmlx-gantt"; // or the appropriate import for the gantt library
 
-const pastelColors = [
-  'pastel-color-1', 'pastel-color-2', 'pastel-color-3', 'pastel-color-4', 'pastel-color-5',
-  'pastel-color-6', 'pastel-color-7', 'pastel-color-8', 'pastel-color-9', 'pastel-color-10'
-];
 
-const Instructor = ({ name }) => {
-  const instructorColors = useMemo(() => {
-    const colors = {};
-    testData.instructors.forEach((instructor, index) => {
-      colors[instructor.name] = pastelColors[index % pastelColors.length];
-    });
-    return colors;
-  }, []);
 
-  const color = instructorColors[name] || 'default-color';
+const Instructors = ["Instructor 1", "Instructor 2"];
+Instructors.forEach((instructor, index) => {
+  gantt.addCalendar({
+    id: `calendar_${index}`,
+  });
+  // Example: Set Monday to Friday as working days for each instructor
+  for (let day = 1; day <= 5; day++) {
+    gantt.getCalendar(`calendar_${index}`).setWorkTime({ day: day, hours: [9, 18] });
+  }
+});
 
-  return (
-    <div className={`instructor ${color}`}>
-      <span>{name}</span>
-    </div>
-  );
-};
-
-Instructor.propTypes = {
-  name: PropTypes.string.isRequired,
-};
-
-export default Instructor;
+export default Instructors;

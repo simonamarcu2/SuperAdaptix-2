@@ -3,29 +3,30 @@ import { gantt } from "dhtmlx-gantt";
 import "dhtmlx-gantt/codebase/dhtmlxgantt.css";
 import "./Gantt.css";
 import PropTypes from "prop-types";
-import configureColumns from '../../GanttConfig/configureColumns';
-import configureModal from '../../GanttConfig/configureModal';
-import configureGantt from '../../GanttConfig/ganttConfig';
-import testData from "../../data/testData";
+import configureGantt from "../../GanttConfig/ganttConfig";
+import actionBar from "../../GanttConfig/actionBar";
+import configureColumns from "../../GanttConfig/configureColumns";
+import configureZoom from "../../GanttConfig/configureZoom";
+import configureModal from "../../GanttConfig/configureModal";
 
 export default class Gantt extends Component {
   static propTypes = {
     tasks: PropTypes.object.isRequired,
   };
 
+  state = {
+    exportFields: ["id", "text", "start_date", "duration", "instructor"],
+    importFields: ["id", "text", "start_date", "duration", "instructor"],
+  };
+
   componentDidMount() {
-    const { tasks } = this.props; 
+    const { tasks } = this.props;
+
     configureGantt(gantt);
-  
-    // gantt.templates.tooltip_text = (start, end, task) => {
-    //   const resource = testData.resources.find(r => r.id === task.resource_id);
-    //   return `<b>Title:</b> ${task.text}<br/><b>Instructor:</b> ${resource ? resource.text : 'Unknown'}`;
-    // };
-  
-    // gantt.templates.task_class = (start, end, task) => {
-    //   const resource = testData.resources.find(r => r.id === task.resource_id);
-    //   return resource ? resource.text : 'default-color';
-    // };
+    configureZoom(gantt);
+    configureColumns(gantt);
+    configureModal(gantt);
+    // actionBar(gantt);
 
     gantt.plugins({
       auto_scheduling: true,
@@ -35,9 +36,6 @@ export default class Gantt extends Component {
       tooltip: true,
       undo: true,
     });
-    
-    configureColumns(gantt);
-    configureModal(gantt);
 
     gantt.templates.date_grid = function (date) {
       return gantt.date.date_to_str("%d %M")(date);
@@ -76,10 +74,19 @@ export default class Gantt extends Component {
   }
 
   render() {
+    // const { tasks } = this.props;
+    // const { exportFields, importFields } = this.state;
+
     return (
       <div className="gantt-chart">
-        <input type="button" value="Load tasks" onClick={() => gantt.parse(this.props.tasks)} />
-        <input type="button" value="Remove tasks" onClick={() => gantt.clearAll()} />
+        <div className="gantt_control">
+          {/* <ActionBar
+            tasks={tasks}
+            exportFields={exportFields}
+            importFields={importFields}
+            gantt={gantt}
+          /> */}
+        </div>
         <div
           ref={(input) => {
             this.ganttContainer = input;
