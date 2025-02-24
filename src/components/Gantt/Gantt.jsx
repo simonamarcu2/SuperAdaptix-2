@@ -4,10 +4,10 @@ import "dhtmlx-gantt/codebase/dhtmlxgantt.css";
 import "./Gantt.css";
 import PropTypes from "prop-types";
 import configureGantt from "../../GanttConfig/ganttConfig";
-import actionBar from "../../GanttConfig/actionBar";
+// import actionBar from "../ActionBar/ActionBar";
 import configureColumns from "../../GanttConfig/configureColumns";
 import configureZoom from "../../GanttConfig/configureZoom";
-import configureModal from "../../GanttConfig/configureModal";
+import Modal from "../Modal/Modal";
 
 export default class Gantt extends Component {
   static propTypes = {
@@ -25,7 +25,7 @@ export default class Gantt extends Component {
     configureGantt(gantt);
     configureZoom(gantt);
     configureColumns(gantt);
-    configureModal(gantt);
+    Modal(gantt);
     // actionBar(gantt);
 
     gantt.plugins({

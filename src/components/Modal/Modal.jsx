@@ -1,17 +1,8 @@
-import { instructor_names} from "../data/testData";
+import { useState, useEffect } from 'react';
 
-const configureModal = (gantt) => {
+const Modal = (gantt) => {
 
-  // const instructors = ["Instructor 1", "Instructor 2", "Instructor 3", "Instructor 4", "Instructor 5", "Instructor 6", "Instructor 7", "Instructor 8", "Instructor 9", "Instructor 10"];
-  instructor_names.forEach((instructor_names, index) => {
-    gantt.addCalendar({
-      id: `calendar_${index}`,
-    });
-    // Example: Set Monday to Friday as working days for each instructor
-    for (let day = 1; day <= 5; day++) {
-      gantt.getCalendar(`calendar_${index}`).setWorkTime({ day: day, hours: [9, 18] });
-    }
-  });
+  const [instructorNames, setInstructorNames] = useState([]);
 
   gantt.config.lightbox.sections = [
     {
@@ -23,14 +14,13 @@ const configureModal = (gantt) => {
     },
     {
       name: "instructor",
-      height: 30,
+      options: instructorNames.map((instructorName, index) => ({ key: `calendar_${index}`, label: instructorName })),
       map_to: "instructor_names",
       type: "select",
-      options: instructor_names.map((instructor_names, index) => ({ key: `calendar_${index}`, label: instructor_names })),
     },
     { name: "time", type: "duration", map_to: "auto", autofix_end: "true" },
   ];
-
+  gantt.templates.task_class = (_, __, task) => {
   gantt.locale.labels.section_template = "Instructor";
 
   gantt.templates.task_class = (start, end, task) => {
@@ -77,7 +67,7 @@ const configureModal = (gantt) => {
     if (task.type === "course") {
       task.open = true;
     }
-    return true;
+  gantt.attachEvent("onBeforeTaskChanged", (_, __, task) => {
   });
 
   gantt.attachEvent("onBeforeTaskChanged", (id, mode, task) => {
@@ -104,9 +94,7 @@ const configureModal = (gantt) => {
     }
     return true;
   });
-};
+})
+  }}
 
-
-  
-
-export default configureModal;
+export default Modal;
