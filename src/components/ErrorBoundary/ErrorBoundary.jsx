@@ -10,7 +10,6 @@ class ErrorBoundary extends Component {
 
     componentDidCatch(error, errorInfo) {
         this.setState({ error, errorInfo });
-        // You can also log the error to an error reporting service
         console.error("ErrorBoundary caught an error", error, errorInfo);
     }
 
@@ -20,9 +19,9 @@ class ErrorBoundary extends Component {
                 <div>
                     <h2>Something went wrong.</h2>
                     <details style={{ whiteSpace: 'pre-wrap' }}>
-                        {this.state.error && this.state.error.toString()}
+                        {this.state.error?.toString()}
                         <br />
-                        {this.state.errorInfo && this.state.errorInfo.componentStack}
+                        {this.state.errorInfo?.componentStack}
                     </details>
                 </div>
             );

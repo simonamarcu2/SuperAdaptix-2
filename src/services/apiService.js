@@ -3,6 +3,14 @@ const API_URL_COURSES = `${BASE_URL}/courses`;
 const API_URL_INSTRUCTORS = `${BASE_URL}/instructors`;
 const API_URL_ASSIGNMENTS = `${BASE_URL}/assignments`;
 
+const generateColor = (index) => {
+  const colorPalette = [
+    "#FF5733", "#33FF57", "#5733FF", "#F0A500", "#00C8C8",
+    "#FFC3A0", "#FFABAB", "#FFDAAB", "#DDFFAB", "#ABE4FF"
+  ];
+  return colorPalette[index % colorPalette.length]; // Cycle through colors
+};
+
 export const fetchAllData = async () => {
   try {
     const [coursesResponse, instructorsResponse, assignmentsResponse] = await Promise.all([
@@ -19,14 +27,34 @@ export const fetchAllData = async () => {
     const instructorsData = await instructorsResponse.json();
     const assignmentsData = await assignmentsResponse.json();
 
+    let storedColors = JSON.parse(localStorage.getItem("instructorColors")) || {};
+    instructorsData.instructors.forEach((instructor, index) => {
+      if (!storedColors[instructor.name]) {
+        storedColors[instructor.name] = generateColor(index);
+      }
+    });
+
+    localStorage.setItem("instructorColors", JSON.stringify(storedColors));
+
+    const formattedAssignments = assignmentsData.assignments.map((assignment) => ({
+      id: assignment.id,
+      text: assignment.name, 
+      start_date: assignment.start_date,
+      end_date: assignment.end_date,
+      parent: assignment.parent || 0,
+      instructor_name: assignment.instructor_name,
+      color: storedColors[assignment.instructor_name],
+    }));
+
     return {
-      courses: coursesData,
-      instructors: instructorsData,
-      assignments: assignmentsData,
+      courses: coursesData?.courses ?? [],
+      instructors: instructorsData?.instructors ?? [],
+      assignments: formattedAssignments,
+      instructorColors: storedColors,
     };
   } catch (error) {
-    console.error(`Failed to fetch all data: ${error.message}`);
-    return { courses: [], instructors: [], assignments: [] };
+    console.error("❌ Error fetching all data:", error);
+    return { courses: [], instructors: [], assignments: [] , instructorColors: {} };
   }
 };
 

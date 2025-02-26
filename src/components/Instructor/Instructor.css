@@ -1,17 +1,20 @@
-.pastel-color-1 { background-color: #FFB3BA; border: 1px solid #FF6F61;}
-.pastel-color-2 { background-color: #FFDFBA; border: 1px solid #FFB347;}
-.pastel-color-3 { background-color: #FFFFBA; border: 1px solid #c8c859;}
-.pastel-color-4 { background-color: #BAFFC9; border: 1px solid #79c479;}
-.pastel-color-5 { background-color: #BAE1FF; border: 1px solid #87CEEB;}
-.pastel-color-6 { background-color: #FFC3A0; border: 1px solid #FF8C69;}
-.pastel-color-7 { background-color: #FFABAB; border: 1px solid #FF6F61;}
-.pastel-color-8 { background-color: #FFDAAB; border: 1px solid #FFB347;}
-.pastel-color-9 { background-color: #DDFFAB; border: 1px solid #91d32e;}
-.pastel-color-10 { background-color: #ABE4FF; border: 1px solid #87CEEB;}
+/* Dark Muted Theme with CodeNation Branding Aesthetic */
+.professional-color-1 { background-color: #264653; border: 1px solid #1B3A4B; } /* Deep Blue-Gray */
+.professional-color-2 { background-color: #2A9D8F; border: 1px solid #21867A; } /* Teal */
+.professional-color-3 { background-color: #E9C46A; border: 1px solid #C29B4A; } /* Golden Sand */
+.professional-color-4 { background-color: #F4A261; border: 1px solid #D4884E; } /* Muted Orange */
+.professional-color-5 { background-color: #E76F51; border: 1px solid #C55C40; } /* Warm Red */
+.professional-color-6 { background-color: #6D597A; border: 1px solid #564460; } /* Muted Purple */
+.professional-color-7 { background-color: #8D99AE; border: 1px solid #6F7E96; } /* Cool Steel */
+.professional-color-8 { background-color: #D62828; border: 1px solid #AA2020; } /* Deep Red */
+.professional-color-9 { background-color: #457B9D; border: 1px solid #376487; } /* Soft Navy */
+.professional-color-10 { background-color: #1D3557; border: 1px solid #14243A; } /* Midnight Blue */
 
 .default-color {
-  background-color: #cccccc; /* Light gray color */
-  border: 1px solid #999999; /* Darker gray border */
+  background-color: #333; /* Darker Gray for default */
+  border: 1px solid #222; /* Even darker gray border */
+  color: #FFF; /* White text for contrast */
+}
 }
 
 .instructor {
