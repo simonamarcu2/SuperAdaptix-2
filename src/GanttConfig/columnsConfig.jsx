@@ -6,10 +6,12 @@ const columnsConfig = (gantt) => {
       width: 120,
       tree: true,
       template: (task) => {
-        if (!task.parent || task.parent === 0) {
-          return `<b>${task.text}</b>`;
+        if (task.type === "course") {
+          return `<span style="font-weight: bold;">${task.text}</span>`;
+        } else if (task.type === "instructor") {
+          return `<span style="color: ${task.color};">${task.text}</span>`;
         }
-        return `↳ ${task.text}`;
+        return task.text;
       },
     },
     {

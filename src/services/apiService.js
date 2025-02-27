@@ -3,14 +3,6 @@ const API_URL_COURSES = `${BASE_URL}/courses`;
 const API_URL_INSTRUCTORS = `${BASE_URL}/instructors`;
 const API_URL_ASSIGNMENTS = `${BASE_URL}/assignments`;
 
-const generateColor = (index) => {
-  const colorPalette = [
-    "#FF5733", "#33FF57", "#5733FF", "#F0A500", "#00C8C8",
-    "#FFC3A0", "#FFABAB", "#FFDAAB", "#DDFFAB", "#ABE4FF"
-  ];
-  return colorPalette[index % colorPalette.length]; // Cycle through colors
-};
-
 export const fetchAllData = async () => {
   try {
     const [coursesResponse, instructorsResponse, assignmentsResponse] = await Promise.all([
@@ -27,34 +19,28 @@ export const fetchAllData = async () => {
     const instructorsData = await instructorsResponse.json();
     const assignmentsData = await assignmentsResponse.json();
 
-    let storedColors = JSON.parse(localStorage.getItem("instructorColors")) || {};
-    instructorsData.instructors.forEach((instructor, index) => {
-      if (!storedColors[instructor.name]) {
-        storedColors[instructor.name] = generateColor(index);
-      }
-    });
-
-    localStorage.setItem("instructorColors", JSON.stringify(storedColors));
+    const instructorColors = instructorsData.instructors.reduce((acc, instructor) => {
+      acc[instructor.name] = instructor.color || "#49cda3";
+      return acc;
+    }, {});
 
     const formattedAssignments = assignmentsData.assignments.map((assignment) => ({
       id: assignment.id,
-      text: assignment.name, 
+      text: assignment.name,
       start_date: assignment.start_date,
       end_date: assignment.end_date,
       parent: assignment.parent || 0,
       instructor_name: assignment.instructor_name,
-      color: storedColors[assignment.instructor_name],
+      color: instructorColors[assignment.instructor_name] || "#49cda3",
     }));
 
     return {
       courses: coursesData?.courses ?? [],
       instructors: instructorsData?.instructors ?? [],
       assignments: formattedAssignments,
-      instructorColors: storedColors,
     };
   } catch (error) {
-    console.error("❌ Error fetching all data:", error);
-    return { courses: [], instructors: [], assignments: [] , instructorColors: {} };
+    return { courses: [], instructors: [], assignments: [] };
   }
 };
 
@@ -68,7 +54,6 @@ const apiRequest = async (url, method, body = null) => {
 
     if (!response.ok) {
       const errorDetails = await response.text();
-      console.error(`API Error: ${method} ${url} - ${errorDetails}`);
       throw new Error(`Request failed: ${errorDetails}`);
     }
 
@@ -78,8 +63,7 @@ const apiRequest = async (url, method, body = null) => {
 
     return response.json();
   } catch (error) {
-    console.error(`API Request Failed: ${method} ${url} - ${error.message}`);
-    throw error;
+    return { error: error.message };
   }
 };
 

@@ -18,14 +18,27 @@ const ganttConfig = (gantt) => {
 
   gantt.templates.tooltip_text = (start, end, data) => {
     if (data.parent === 0) {
-      return `<b>Course:</b> ${data.text}<br/><b>Start:</b> ${gantt.templates.task_date(start)}<br/><b>End:</b> ${gantt.templates.task_date(end)}`;
+      return `<b>Course:</b> ${
+        data.text
+      }<br/><b>Start:</b> ${gantt.templates.task_date(
+        start
+      )}<br/><b>End:</b> ${gantt.templates.task_date(end)}`;
     }
-    return `<b>Instructor:</b> ${data.text}<br/><b>Start:</b> ${gantt.templates.task_date(start)}<br/><b>End:</b> ${gantt.templates.task_date(end)}`;
+    return `<b>Instructor:</b> ${
+      data.text
+    }<br/><b>Start:</b> ${gantt.templates.task_date(
+      start
+    )}<br/><b>End:</b> ${gantt.templates.task_date(end)}`;
   };
-  
-  gantt.templates.task_class = (start, end, data) => {
-    if (data.parent === 0) return "gantt_course_task";
-    return "gantt_instructor_task";
+
+  gantt.templates.task_class = function (start, end, task) {
+    return "custom-task";
+  };
+
+  gantt.templates.task_text = function (start, end, task) {
+    return `<div className="custom-color-task" style="background-color: ${task.color}">
+              ${task.text}
+            </div>`;
   };
 };
 

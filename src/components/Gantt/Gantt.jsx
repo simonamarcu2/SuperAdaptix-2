@@ -9,31 +9,24 @@ import zoomConfig from "../../GanttConfig/zoomConfig";
 
 const Gantt = ({ data }) => {
   const ganttContainer = useRef(null);
-  gantt.templates.task_class = function (start, end, task) {
-    let taskClass = "custom-task";
-    if (task.color) {
-      taskClass += ` task-color-${task.id}`;
-    }
-    return taskClass;
-  };
+  
   useEffect(() => {
     if (!data?.assignments?.length) {
-      console.warn("⚠️ No assignments data found in Gantt.jsx");
       return;
     }
-
+  
     ganttConfig(gantt);
     columnsConfig(gantt);
     zoomConfig(gantt);
-
+  
     gantt.init(ganttContainer.current);
     gantt.parse({ data: data.assignments });
-
+  
     return () => {
       gantt.clearAll();
     };
   }, [data]);
-
+  
   return (
     <div>
       <div

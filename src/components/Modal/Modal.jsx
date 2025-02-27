@@ -8,14 +8,18 @@ const Modal = () => {
   useEffect(() => {
     const loadInstructors = async () => {
       try {
-        const data = await fetchAllData();
-        setInstructors(data.instructors || []);
+      const data = await fetchAllData();
+      setInstructors(data.instructors || []);
       } catch (error) {
-        console.error("Error loading instructors:", error);
+      gantt.message({
+        type: "error",
+        text: "Failed to load instructors. Please try again later.",
+      });
       }
     };
     loadInstructors();
   }, []);
+
 
   gantt.config.lightbox.sections = [
     {
@@ -26,65 +30,25 @@ const Modal = () => {
       focus: true,
     },
     {
-      name: "instructor",
+      name: "template",
       options: instructors.map((instructor) => ({
         key: instructor.id,
         label: instructor.name,
       })),
-      map_to: "instructor_id",
+      map_to: "my_template",
       type: "select",
     },
     { name: "time", type: "duration", map_to: "auto", autofix_end: true },
   ];
 
-  gantt.locale.labels.section_instructor = "Instructor";
+  gantt.locale.labels.section_template = "Instructor";
 
-  gantt.templates.task_class = (start, end, task) => {
-    return task.type === "course" ? "course-task" : "owner-task";
-  };
-
-  gantt.attachEvent("onBeforeLightbox", (id) => {
+  gantt.attachEvent("onBeforeLightbox", function(id) {
     const task = gantt.getTask(id);
-    if (task.type === "course") {
-      gantt.config.lightbox.sections = [
-        {
-          name: "description",
-          height: 30,
-          map_to: "text",
-          type: "textarea",
-          focus: true,
-        },
-      ];
-    } else {
-      gantt.config.lightbox.sections = [
-        {
-          name: "description",
-          height: 30,
-          map_to: "text",
-          type: "textarea",
-          focus: true,
-        },
-        {
-          name: "instructor",
-          options: instructors.map((instructor) => ({
-            key: instructor.id,
-            label: instructor.name,
-          })),
-          map_to: "instructor_id",
-          type: "select",
-        },
-        { name: "time", type: "duration", map_to: "auto", autofix_end: true },
-      ];
-    }
+    task.my_template = "<span id='title1'>Instructors: </span>"+ task.users
+    +"<span id='title2'>Progress: </span>"+ task.progress*100 +" %";
     return true;
-  });
-
-  gantt.attachEvent("onTaskLoading", (task) => {
-    if (task.type === "course") {
-      task.open = true;
-    }
-    return true;
-  });
+});
 
   gantt.attachEvent("onBeforeTaskChanged", (id, mode, task) => {
     if (task.type === "owner") {

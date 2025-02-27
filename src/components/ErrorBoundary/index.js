@@ -1,2 +1,2 @@
-import Courses from './Courses.jsx';
-export default Courses;
+import ErrorBoundary from './ErrorBoundary';
+export default ErrorBoundary;

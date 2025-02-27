@@ -5,7 +5,9 @@ body,
 .gantt-container {
   height: 100%;
 }
-
+.gantt-container {
+  margin-top: auto;
+}
 .weekend {
   background: var(--dhx-gantt-base-colors-background-alt);
 }
@@ -40,9 +42,12 @@ body,
 .gantt_grid {
   width: 400px;
 }
-
+.gantt_cal_ltitle{
+  color:black
+}
 .gantt_task_content {
   color: black;
+  width: auto;
 }
 
 .gantt_control {

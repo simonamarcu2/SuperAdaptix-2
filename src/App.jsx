@@ -2,9 +2,15 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import Gantt from "./components/Gantt";
 import { fetchAllData } from "../src/services/apiService";
+import Header from "./components/Header/Header";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const App = () => {
-  const [data, setData] = useState({ courses: [], instructors: [], assignments: [] });
+  const [data, setData] = useState({
+    courses: [],
+    instructors: [],
+    assignments: [],
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -18,11 +24,8 @@ const App = () => {
             instructors: fetchedData.instructors,
             assignments: fetchedData.assignments,
           });
-        } else {
-          console.error("❌ Received invalid data structure:", fetchedData);
         }
       } catch (error) {
-        console.error("❌ Error fetching data:", error);
         setError(error.message);
       } finally {
         setLoading(false);
@@ -36,12 +39,14 @@ const App = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
+    <ErrorBoundary>
     <div>
-      <h1>SuperAdaptix</h1>
+      <Header instructors={data.instructors} />
       <div className="gantt-container">
         <Gantt data={data} />
       </div>
     </div>
+    </ErrorBoundary>
   );
 };
 

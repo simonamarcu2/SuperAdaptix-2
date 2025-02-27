@@ -28,42 +28,9 @@ const initializeInstructorCalendars = async () => {
       }
     });
   } catch (error) {
-    console.error("Error initializing instructor calendars:", error);
+    alert(`An error occurred: ${error.message}`);
   }
 };
-
-// const isInstructorAvailable = (instructorName, newStartDate, newEndDate) => {
-//   const calendarId = `calendar_${instructorName}`;
-//   const calendar = gantt.getCalendar(calendarId);
-
-//   for (
-//     let day = new Date(newStartDate);
-//     day <= newEndDate;
-//     day.setDate(day.getDate() + 1)
-//   ) {
-//     for (
-//       let day = new Date(newStartDate);
-//       day <= new Date(newEndDate);
-//       day.setDate(day.getDate() + 1)
-//     ) {
-//       return false;
-//     }
-//   }
-//   return true;
-// };
-
-// const handleCourseAssignment = async (
-//   course,
-//   instructorName,
-//   startDate,
-//   endDate
-// ) => {
-//   const calculateDuration = (startDate, endDate) => {
-//     return Math.ceil(
-//       (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)
-//     );
-//   };
-// };
 
 const Instructor = () => {
   useEffect(() => {
