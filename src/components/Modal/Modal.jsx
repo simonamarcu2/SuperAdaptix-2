@@ -30,6 +30,16 @@ const Modal = () => {
       focus: true,
     },
     {
+      name: "textColor",
+      height: 22,
+      map_to: "textColor",
+      type: "select",
+      options: instructors.map((instructor) => ({
+        key: instructor.color,
+        label: instructor.name,
+      })),
+    },
+    {
       name: "template",
       options: instructors.map((instructor) => ({
         key: instructor.id,

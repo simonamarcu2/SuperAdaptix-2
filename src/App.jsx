@@ -31,21 +31,28 @@ const App = () => {
         setLoading(false);
       }
     };
-
+    
     loadData();
   }, []);
+
+  const handleDataUpdate = async (updatedTasks) => {
+    setData((prevData) => ({
+      ...prevData,
+      assignments: updatedTasks,
+    }));
+  };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
     <ErrorBoundary>
-    <div>
-      <Header instructors={data.instructors} />
-      <div className="gantt-container">
-        <Gantt data={data} />
+      <div>
+        <Header instructors={data.instructors} />
+        <div className="gantt-container">
+          <Gantt data={data} onAssignmentsUpdated={handleDataUpdate} />
+        </div>
       </div>
-    </div>
     </ErrorBoundary>
   );
 };

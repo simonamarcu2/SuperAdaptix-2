@@ -1,34 +1,27 @@
-button {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 6px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-  width: 110px;
-  height: 40px;
-  margin-right: 8px;
-  box-shadow: inset 0 1px 1px #fff;
-  background-image: linear-gradient(to bottom, #e4f0ff, #dfedff, #d5e8ff);
-  color: #000000;
-}
-
-.import-csv {
-  box-shadow: inset 0 1px 1px #fff;
-  background-image: linear-gradient(to bottom, #e4f0ff, #dfedff, #d5e8ff);
-  color: #000000;
+.gantt-action-bar {
+  display: flex;
+  justify-conten: space-between;
+  gap: 10px;
   padding: 10px;
-  border-radius: 6px;
-  width: 172px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+}
+
+.gantt-action-bar button {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: none;
+  background: #073834;
+  color: white;
   cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.3s;
 }
 
-.icon {
-  background-color: #ffe3e3;
-  color: #862e2e;
+.gantt-action-bar button:hover {
+  background: #177060;
 }
 
-button:hover {
-  opacity: 0.85;
+.gantt-action-bar button:active {
+  background: #0ebf98;
 }
-

@@ -6,8 +6,9 @@ import PropTypes from "prop-types";
 import ganttConfig from "../../GanttConfig/ganttConfig";
 import columnsConfig from "../../GanttConfig/columnsConfig";
 import zoomConfig from "../../GanttConfig/zoomConfig";
+import ActionBar from "../ActionBar/actionBar";
 
-const Gantt = ({ data }) => {
+const Gantt = ({ data, onAssignmentsUpdated }) => {
   const ganttContainer = useRef(null);
   
   useEffect(() => {
@@ -18,21 +19,22 @@ const Gantt = ({ data }) => {
     ganttConfig(gantt);
     columnsConfig(gantt);
     zoomConfig(gantt);
-  
+    
     gantt.init(ganttContainer.current);
     gantt.parse({ data: data.assignments });
-  
+    gantt.attachEvent("onAfterTaskUpdate", function(id, item) {
+      onAssignmentsUpdated(gantt.serialize().data);
+    });
+    
     return () => {
       gantt.clearAll();
     };
-  }, [data]);
+  }, [data, onAssignmentsUpdated]);
   
   return (
     <div>
-      <div
-        ref={ganttContainer}
-        style={{ width: "100%", height: `calc(100vh - 52px)` }}
-      />
+      <ActionBar data={data} />
+      <div ref={ganttContainer} style={{ width: "100%", height: `calc(100vh - 52px)` }} />
     </div>
   );
 };
@@ -43,6 +45,7 @@ Gantt.propTypes = {
     instructors: PropTypes.array.isRequired,
     assignments: PropTypes.array.isRequired,
   }).isRequired,
+  onAssignmentsUpdated: PropTypes.func.isRequired,
 };
 
 export default Gantt;

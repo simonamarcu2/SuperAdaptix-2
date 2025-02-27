@@ -1,6 +1,15 @@
 const ganttConfig = (gantt) => {
   gantt.setSkin("meadow");
 
+  gantt.plugins({
+    auto_scheduling: true,
+    click_drag: true,
+    multiselect: true,
+    overlay: true,
+    tooltip: true,
+    undo: true,
+  });
+
   gantt.config.work_time = true;
   gantt.config.correct_work_time = true;
   gantt.config.skip_off_time = true;
@@ -16,20 +25,45 @@ const ganttConfig = (gantt) => {
   gantt.config.sort = true;
   gantt.config.drag_project = true;
 
-  gantt.templates.tooltip_text = (start, end, data) => {
-    if (data.parent === 0) {
-      return `<b>Course:</b> ${
-        data.text
-      }<br/><b>Start:</b> ${gantt.templates.task_date(
-        start
-      )}<br/><b>End:</b> ${gantt.templates.task_date(end)}`;
-    }
-    return `<b>Instructor:</b> ${
-      data.text
-    }<br/><b>Start:</b> ${gantt.templates.task_date(
-      start
-    )}<br/><b>End:</b> ${gantt.templates.task_date(end)}`;
+  gantt.config.open_tree_initially = true;
+
+  
+  gantt.templates.date_grid = function (date) {
+    return gantt.date.date_to_str("%d %M")(date);
   };
+  gantt.templates.scale_cell_class = function (date) {
+    if (!gantt.isWorkTime(date)) return "weekend";
+  };
+  gantt.templates.timeline_cell_class = function (item, date) {
+    if (!gantt.isWorkTime(date)) return "weekend";
+  };
+
+  gantt.attachEvent("onBeforeAutoSchedule", function () {
+    gantt.message("Recalculating project schedule...");
+    return true;
+  });
+
+  gantt.attachEvent(
+    "onAfterTaskAutoSchedule",
+    function (task, new_date, constraint, predecessor) {
+      gantt.message({
+        text:
+          "<b>" +
+          task.text +
+          "</b> has been rescheduled to " +
+          gantt.templates.task_date(new_date) +
+          " due to <b>" +
+          predecessor.text +
+          "</b> constraint",
+        expire: 4000,
+      });
+    }
+  );
+
+  gantt.templates.tooltip_text = (start, end, data) => {
+      return ` ${data.text}<br/>
+              <b>Start:</b> ${gantt.templates.task_date(start)}`;
+    };
 
   gantt.templates.task_class = function (start, end, task) {
     return "custom-task";
