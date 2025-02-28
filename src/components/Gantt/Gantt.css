@@ -76,3 +76,26 @@ body,
   text-align: center;
   padding: 5px;
 }
+
+.g-dropdown{
+  border-radius: 4px;
+  color: black;
+  text-align: center;
+  padding: 5px;
+}
+
+.drafts-container {
+  max-height: 400px;
+  overflow-y: auto;
+  border-top: 2px solid #ddd;
+  margin-top: 10px;
+  padding-top: 10px;
+}
+
+.draft-item {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}

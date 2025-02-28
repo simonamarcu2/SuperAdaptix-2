@@ -1,2 +1,2 @@
-import ActionBar from "../ActionBar.jsx";
+import ActionBar from "./actionBar";
 export default ActionBar;

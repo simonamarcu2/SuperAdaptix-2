@@ -1,6 +1,5 @@
 .gantt-action-bar {
   display: flex;
-  justify-conten: space-between;
   gap: 10px;
   padding: 10px;
   background: #f8f9fa;
@@ -19,9 +18,9 @@
 }
 
 .gantt-action-bar button:hover {
-  background: #177060;
+  background: #00b392;
 }
 
 .gantt-action-bar button:active {
-  background: #0ebf98;
+  background: #9bdbcb;
 }

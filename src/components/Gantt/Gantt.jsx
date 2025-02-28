@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 import ganttConfig from "../../GanttConfig/ganttConfig";
 import columnsConfig from "../../GanttConfig/columnsConfig";
 import zoomConfig from "../../GanttConfig/zoomConfig";
-import ActionBar from "../ActionBar/actionBar";
 
 const Gantt = ({ data, onAssignmentsUpdated }) => {
   const ganttContainer = useRef(null);
@@ -33,7 +32,6 @@ const Gantt = ({ data, onAssignmentsUpdated }) => {
   
   return (
     <div>
-      <ActionBar data={data} />
       <div ref={ganttContainer} style={{ width: "100%", height: `calc(100vh - 52px)` }} />
     </div>
   );
