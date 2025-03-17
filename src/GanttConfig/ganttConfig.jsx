@@ -4,6 +4,8 @@ const ganttConfig = (gantt) => {
   gantt.plugins({
     auto_scheduling: true,
     click_drag: true,
+    export_api: true,
+    excel_export: true,
     multiselect: true,
     overlay: true,
     tooltip: true,
@@ -65,6 +67,7 @@ const ganttConfig = (gantt) => {
               <b>Start:</b> ${gantt.templates.task_date(start)}`;
     };
 
+  // eslint-disable-next-line no-unused-vars
   gantt.templates.task_class = function (start, end, task) {
     return "custom-task";
   };

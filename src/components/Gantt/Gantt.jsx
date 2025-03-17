@@ -28,7 +28,7 @@ const Gantt = ({ data, onAssignmentsUpdated }) => {
     return () => {
       gantt.clearAll();
     };
-  }, [data, onAssignmentsUpdated]);
+  }, [data.assignments, onAssignmentsUpdated]);
   
   return (
     <div>

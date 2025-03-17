@@ -9,9 +9,19 @@ const ActionBar = ({ data, onCreate, onSave, onDelete, isDraft }) => {
   const undo = () => gantt.undo();
   const redo = () => gantt.redo();
 
-  const exportToExcel = () => gantt.exportToExcel();
+  const exportToExcel = () => {
+    gantt.exportToExcel({
+        name: "Gantt_Schedule.xlsx",
+        columns: [
+            { id: "text", header: "Task Name" },
+            { id: "start_date", header: "Start Date", type: "date", format: "%d-%m" },
+            { id: "duration", header: "Duration" },
+            { id: "parent", header: "Parent Task" }
+        ]
+    });
+};
+
   const importFromExcel = () => {
-    // Implement the import logic here
     console.log("Import from Excel");
   };
 
@@ -38,13 +48,14 @@ const ActionBar = ({ data, onCreate, onSave, onDelete, isDraft }) => {
       text: "New Owner",
       start_date: task.start_date,
       duration: 5,
+      instructor: "Instructor Name",
     };
 
     gantt.addTask(newOwner, selectedId);
   };
 
   return (
-    <div className="gantt-action-bar" >
+    <div className="gantt-action-bar">
       <button onClick={zoomIn}>Zoom In</button>
       <button onClick={zoomOut}>Zoom Out</button>
       <button onClick={undo}>Undo</button>
