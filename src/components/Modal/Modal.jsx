@@ -1,25 +1,24 @@
-import { useState, useEffect } from "react";
 import { gantt } from "dhtmlx-gantt";
-import { fetchAllData } from "../../services/apiService";
+import { localData } from "../../services/localData";
+import "./Modal.css";
 
 const Modal = () => {
-  const [instructors, setInstructors] = useState([]);
+  const data = localData();
+  const owners = data.instructors.map((instructor) => ({
+    key: instructor.id,
+    label: instructor.name,
+    backgroundColor: instructor.backgroundColor,
+    textColor: instructor.textColor,
+  }));
 
-  useEffect(() => {
-    const loadInstructors = async () => {
-      try {
-      const data = await fetchAllData();
-      setInstructors(data.instructors || []);
-      } catch (error) {
-      gantt.message({
-        type: "error",
-        text: "Failed to load instructors. Please try again later.",
-      });
-      }
-    };
-    loadInstructors();
-  }, []);
-
+  function findById(ownerId) {
+    for (let i = 0; i < owners.length; i++) {
+        if (owners[i].key == ownerId) {
+            return owners[i];
+        }
+    }
+    return owners[0];
+  };
 
   gantt.config.lightbox.sections = [
     {
@@ -30,40 +29,58 @@ const Modal = () => {
       focus: true,
     },
     {
-      name: "textColor",
+      name: "template",
+      label: "Instructor",
       height: 22,
-      map_to: "textColor",
+      map_to: "instructor_id",
       type: "select",
-      options: instructors.map((instructor) => ({
-        key: instructor.color,
-        label: instructor.name,
-      })),
+      options: owners,
     },
     {
       name: "template",
-      options: instructors.map((instructor) => ({
+      map_to: "my_template",
+      type: "select",
+      options: data.instructors.map((instructor) => ({
         key: instructor.id,
         label: instructor.name,
       })),
-      map_to: "my_template",
-      type: "select",
     },
     { name: "time", type: "duration", map_to: "auto", autofix_end: true },
   ];
 
-  gantt.locale.labels.section_template = "Instructor";
+  gantt.locale.labels.section_template = "Owner";
+
+  function colorizeTask(task) {
+    const owner = findById(task.owner_id);
+    task.color = owner.backgroundColor;
+    task.textColor = owner.textColor;
+  }
+
+  gantt.attachEvent("onAfterTaskAdd", function (id, item) {
+    colorizeTask(item);
+  });
+
+  gantt.attachEvent("onAfterTaskUpdate", function (id, item) {
+    colorizeTask(item);
+  });
 
   gantt.attachEvent("onBeforeLightbox", function(id) {
     const task = gantt.getTask(id);
     task.my_template = "<span id='title1'>Instructors: </span>"+ task.users
     +"<span id='title2'>Progress: </span>"+ task.progress*100 +" %";
     return true;
-});
+  });
+  
+  gantt.batchUpdate(function () {
+    gantt.eachTask(function (task) {
+        colorizeTask(task);
+    })
+})
 
   gantt.attachEvent("onBeforeTaskChanged", (id, mode, task) => {
     if (task.type === "owner") {
-      const parent = gantt.getTask(task.parent);
-      const children = gantt.getChildren(parent.id);
+      const course_id = gantt.getTask(task.course_id);
+      const children = gantt.getChildren(course_id.id);
       for (const childId of children) {
         const child = gantt.getTask(childId);
         if (child.id !== task.id && gantt.isTaskExists(child.id)) {

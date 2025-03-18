@@ -37,7 +37,7 @@ export const fetchAllData = async () => {
       text: assignment.name,
       start_date: assignment.start_date,
       end_date: assignment.end_date,
-      parent: assignment.parent || 0,
+      course_id: assignment.course_id || 0,
       instructor_name: assignment.instructor_name,
       color: instructorColors[assignment.instructor_name] || "#DDDDDD",
     })

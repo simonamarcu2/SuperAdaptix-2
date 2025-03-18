@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import Gantt from "./Gantt";
 import ActionBar from "../../components/ActionBar";
 import { fetchAllData } from "../../services/dataService";
+import { localData } from "../../services/localData";
 
 const DRAFT_STORAGE_KEY = "ganttDrafts";
+const USE_LOCAL_DATA = import.meta.env.VITE_USE_LOCAL_DATA === "true";
 
 const GanttManager = () => {
   const [ganttInstances, setGanttInstances] = useState([]);
@@ -14,7 +16,7 @@ const GanttManager = () => {
   useEffect(() => {
     const loadInitialData = async () => {
       try {
-        const fetchedData = await fetchAllData();
+        const fetchedData = USE_LOCAL_DATA ? localData() : await fetchAllData();
         const storedDrafts = JSON.parse(localStorage.getItem(DRAFT_STORAGE_KEY)) || [];
 
         const defaultInstance = {

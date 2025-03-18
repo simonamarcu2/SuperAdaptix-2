@@ -1,22 +1,25 @@
 import "./Instructor.css";
 import { useEffect } from "react";
-import { fetchInstructorAssignments } from "../../services/apiService";
-import { gantt } from "dhtmlx-gantt";
+// import { fetchInstructorAssignments } from "../../services/apiService";
+import "dhtmlx-gantt";
+const gantt = window.gantt;
+import { localData } from "../../services/localData";
 
 
 const initializeInstructorCalendars = async () => {
   try {
-    const assignments = await fetchInstructorAssignments();
-
+    // const assignments = await fetchInstructorAssignments();
+    const assignments = localData.assignments();
+    
     assignments.forEach(({ instructor_name, start_date, end_date }) => {
       const calendarId = `calendar_${instructor_name}`;
-
+      
       gantt.addCalendar({ id: calendarId });
-
+      
       for (let day = 1; day <= 5; day++) {
         gantt.getCalendar(calendarId).setWorkTime({ day: day, hours: [9, 18] });
       }
-
+      
       const start = new Date(start_date);
       const end = new Date(end_date);
       for (

@@ -9,27 +9,27 @@ import zoomConfig from "../../GanttConfig/zoomConfig";
 
 const Gantt = ({ data, onAssignmentsUpdated }) => {
   const ganttContainer = useRef(null);
-  
+
   useEffect(() => {
     if (!data?.assignments?.length) {
       return;
     }
-  
+
     ganttConfig(gantt);
     columnsConfig(gantt);
     zoomConfig(gantt);
-    
+
     gantt.init(ganttContainer.current);
     gantt.parse({ data: data.assignments });
-    gantt.attachEvent("onAfterTaskUpdate", function(id, item) {
+    gantt.attachEvent("onAfterTaskUpdate", function() {
       onAssignmentsUpdated(gantt.serialize().data);
     });
-    
+
     return () => {
       gantt.clearAll();
     };
   }, [data.assignments, onAssignmentsUpdated]);
-  
+
   return (
     <div>
       <div ref={ganttContainer} style={{ width: "100%", height: `calc(100vh - 52px)` }} />

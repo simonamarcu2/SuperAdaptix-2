@@ -31,8 +31,9 @@ body,
   text-align: center;
 }
 .gantt_task_line {
-  border-radius: 10px;
+  border-radius: 4px;
   color: black;
+  padding: 4px;
 }
 .gantt_task_conflict {
   background-color: #ffcccc !important;
@@ -48,6 +49,9 @@ body,
 .gantt_task_content {
   color: black;
   width: auto;
+  overflow-wrap: break-word;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .gantt_control {
@@ -68,13 +72,6 @@ body,
   font-size: 13px;
   line-height: 16px;
   box-shadow: inset 0 1px 1px #fff;
-}
-
-.custom-task {
-  border-radius: 4px;
-  color: black;
-  text-align: center;
-  padding: 5px;
 }
 
 .g-dropdown{
@@ -98,4 +95,8 @@ body,
   border: 1px solid #ddd;
   border-radius: 8px;
   background-color: #f9f9f9;
+}
+
+.gantt_marker_content{
+  width: 1px;
 }

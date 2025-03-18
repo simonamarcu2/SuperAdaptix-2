@@ -1,3 +1,5 @@
+import { localData } from "../services/localData";
+
 const ganttConfig = (gantt) => {
   gantt.setSkin("meadow");
 
@@ -10,8 +12,8 @@ const ganttConfig = (gantt) => {
     overlay: true,
     tooltip: true,
     undo: true,
+    marker: true,
   });
-
   gantt.config.work_time = true;
   gantt.config.correct_work_time = true;
   gantt.config.skip_off_time = true;
@@ -29,7 +31,6 @@ const ganttConfig = (gantt) => {
 
   gantt.config.open_tree_initially = true;
 
-  
   gantt.templates.date_grid = function (date) {
     return gantt.date.date_to_str("%d %M")(date);
   };
@@ -62,21 +63,50 @@ const ganttConfig = (gantt) => {
     }
   );
 
-  gantt.templates.tooltip_text = (start, end, data) => {
-      return ` ${data.text}<br/>
-              <b>Start:</b> ${gantt.templates.task_date(start)}`;
-    };
+  const data = localData();
 
-  // eslint-disable-next-line no-unused-vars
+  gantt.templates.rightside_text = function(start, end, task){
+    const instructor = data.instructors.find(instructor => instructor.id === task.instructor_id);
+    return instructor ? `Owner: ${instructor.name}` : "";
+  };
+
+  gantt.templates.tooltip_text = (start, end, task) => {
+    const course = data.courses.find(course => course.id === task.course_id);
+    const instructor = data.instructors.find(instructor => instructor.id === task.instructor_id);
+    return `
+      <b>Course:</b> ${course ? course.name : "N/A"}<br/>
+      <b>Owner:</b> ${instructor ? instructor.name : "N/A"}<br/>
+      <b>Start:</b> ${gantt.templates.task_date(start)}<br/>
+    `;
+  };
+
+  gantt.templates.task_text = function(start, end, task) {
+    const course = data.courses.find(course => course.id === task.course_id);
+    return course ? course.name : "Undefined";
+  };
+
   gantt.templates.task_class = function (start, end, task) {
-    return "custom-task";
+    const instructor = data.instructors.find(instructor => instructor.id === task.instructor_id);
+    return instructor ? `instructor-color-${instructor.id}` : "";
   };
 
-  gantt.templates.task_text = function (start, end, task) {
-    return `<div className="custom-color-task" style="background-color: ${task.color}">
-              ${task.text}
-            </div>`;
+  gantt.templates.task_row_class = function (start, end, task) {
+    const instructor = data.instructors.find(instructor => instructor.id === task.instructor_id);
+    return instructor ? `background-color: ${instructor.color};` : "";
   };
+
+  gantt.templates.task_line_class = function (start, end, task) {
+    const instructor = data.instructors.find(instructor => instructor.id === task.instructor_id);
+    return instructor ? `background-color: ${instructor.color};` : "";
+  };
+
+  const today = new Date();
+
+  gantt.addMarker({
+    start_date: today,
+    css: "today",
+    text: "Today",
+  });
 };
 
 export default ganttConfig;

@@ -9,17 +9,12 @@ const ActionBar = ({ data, onCreate, onSave, onDelete, isDraft }) => {
   const undo = () => gantt.undo();
   const redo = () => gantt.redo();
 
-  const exportToExcel = () => {
+  function exportData() {
     gantt.exportToExcel({
-        name: "Gantt_Schedule.xlsx",
-        columns: [
-            { id: "text", header: "Task Name" },
-            { id: "start_date", header: "Start Date", type: "date", format: "%d-%m" },
-            { id: "duration", header: "Duration" },
-            { id: "parent", header: "Parent Task" }
-        ]
-    });
-};
+        visual: "base-colors",
+        cellColors: true
+    })
+}
 
   const importFromExcel = () => {
     console.log("Import from Excel");
@@ -48,8 +43,8 @@ const ActionBar = ({ data, onCreate, onSave, onDelete, isDraft }) => {
       text: "New Owner",
       start_date: task.start_date,
       duration: 5,
-      instructor: "Instructor Name",
-    };
+      type: "owner",
+      course_id: selectedId,};
 
     gantt.addTask(newOwner, selectedId);
   };
@@ -60,7 +55,7 @@ const ActionBar = ({ data, onCreate, onSave, onDelete, isDraft }) => {
       <button onClick={zoomOut}>Zoom Out</button>
       <button onClick={undo}>Undo</button>
       <button onClick={redo}>Redo</button>
-      <button onClick={exportToExcel}>Export Excel</button>
+      <button onClick={exportData}>Export Excel</button>
       <button onClick={importFromExcel}>Import Excel</button>
       <button onClick={refreshGantt}>Refresh</button>
       <button onClick={addOwner}>Add Instructor</button>
